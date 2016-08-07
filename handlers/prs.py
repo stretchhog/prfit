@@ -41,7 +41,7 @@ class CurrentPR(Resource):
 						"value": "4:12"
 					},
 					{
-						"name": "Furthers run",
+						"name": "Farthest run",
 						"metric": "Distance",
 						'date': datetime.today().isoformat(),
 						"value": "11.2"
