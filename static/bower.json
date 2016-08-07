@@ -7,6 +7,9 @@
     "d3": null,
     "angular": "1.5.0",
     "angular-ui-notification": null,
+    "angular-material": "master",
+    "angular-aria": null,
+    "angular-animate": null,
     "angular-resource": null
   },
   "resolutions": {

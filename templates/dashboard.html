@@ -1,5 +1,29 @@
 {% extends "index.html" %}
 {% block index %}
+<div ng-controller="DashboardCtrl" ng-cloak layout-gt-sm="row" layout="column">
+	<div flex-gt-sm="50" flex>
+		<md-content>
+			<md-list>
+				<md-list-item ng-repeat="cat in data.prs">
+					<md-subheader class="md-no-sticky">{[{ cat.category }]}</md-subheader>
+					<md-list-item ng-repeat="pr in cat.prs">
+						<p>{[{ pr.name }]}</p>
+						<p><i class="{[{ pr.icon }]}"></i> {[{ pr.value }]}</p>
+						<md-checkbox class="md-secondary" ng-model="person.selected"></md-checkbox>
+						<md-icon md-svg-icon="communication:email" ng-click=""
+						         aria-label="Send Email"
+						         class="md-secondary md-hue-3"></md-icon>
+						<md-icon class="md-secondary" ng-click="" aria-label="Chat"
+						         md-svg-icon="communication:message"></md-icon>
+					</md-list-item>
+					<md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+					<md-divider></md-divider>
+				</md-list-item>
+			</md-list>
+		</md-content>
+	</div>
+</div>
+
 
 <div class="col-sm-12 content" ng-controller="DashboardCtrl">
 
