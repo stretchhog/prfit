@@ -1,0 +1,15 @@
+{
+  "name": "customer_journey",
+  "dependencies": {
+    "font-awesome": null,
+    "jquery": null,
+    "bootstrap": null,
+    "d3": null,
+    "angular": "1.5.0",
+    "angular-ui-notification": null,
+    "angular-resource": null
+  },
+  "resolutions": {
+    "angular": "1.5.0"
+  }
+}

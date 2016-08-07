@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+{% block index %}
+
+<div class="col-sm-12 content" ng-controller="DashboardCtrl">
+
+	<div ng-repeat="cat in data.prs">
+		<div class="col-md-4 pr-category">
+			<h2>{[{ cat.category }]}</h2>
+			<div ng-repeat="pr in cat.prs" class="pr">
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-xs-7">
+							<h4>{[{ pr.name }]}</h4>
+						</div>
+						<div class="col-xs-5">
+							<i class="{[{ pr.icon }]}"></i> {[{ pr.value }]}
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<a href="#" ng-click="showDetails = ! showDetails">More</a>
+				</div>
+
+				<div class="row" ng-show="showDetails">
+					<div class="col-md-12">
+						<ul>
+							<li ng-if="pr.hasOwnProperty('rxd')">
+								RXd: <i ng-class="pr.rxd ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i>
+							</li>
+							<li>
+								PR date: {[{ pr.date | date:'yyyy-MM-dd' }]}
+							</li>
+						</ul>
+						<div class="col-md-offset-2 col-md-2">
+							<i class="fa fa-2x fa-plus-circle"></i>
+						</div>
+						<div class="col-md-offset-2 col-md-2">
+							<i class="fa fa-2x fa-line-chart"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
