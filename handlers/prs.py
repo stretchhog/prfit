@@ -13,25 +13,6 @@ class CurrentPR(Resource):
 	def get():
 		data = {"prs": [
 			{
-				"category": "Crossfit",
-				"prs": [
-					{
-						"name": "Murph",
-						"metric": "Time",
-						"value": "49:20",
-						'date': datetime.today().isoformat(),
-						"rxd": True
-					},
-					{
-						"name": "DT",
-						"metric": "AMRAP",
-						"value": "17",
-						'date': datetime.today().isoformat(),
-						"rxd": False
-					},
-				]
-			},
-			{
 				"category": "Running",
 				"prs": [
 					{

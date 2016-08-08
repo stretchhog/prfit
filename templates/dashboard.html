@@ -1,26 +1,16 @@
-{% extends "index.html" %}
-{% block index %}
+{% extends "base_content.html" %}
+{% block title_name %}Dashboard{% endblock %}
+{% block main %}
 
-<div ng-controller="DashboardCtrl" ng-cloak layout-gt-sm="row" layout="column">
-	<div flex-gt-md="100" flex>
-		<md-content>
-			<h1>Fitness PR dashboard</h1>
-			<p>Click PR to show more details.</p>
-			<div ng-repeat="cat in data.prs">
-				<md-list>
-					<md-subheader class="md-no-sticky">{[{ cat.category }]}</md-subheader>
-					<md-list-item class="md-2-line" ng-repeat="pr in cat.prs">
-						<img ng-src="" class="md-avatar"/>
-						<div class="md-list-item-text" layout="column">
-							<h3> {[{ pr.name }]} <span ng-if="pr.hasOwnProperty('rxd')"> | <code>RXD</code> <md-checkbox
-									ng-model="pr.rxd"></md-checkbox></span></h3>
-							<h4><i class="{[{ pr.icon }]}"></i> {[{ pr.value }]} <span ng-if="pr.hasOwnProperty('unit')"> {[{ pr.unit }]}</span></h4>
-						</div>
-				</md-list>
-				<md-divider></md-divider>
-			</div>
-		</md-content>
-	</div>
-</div>
-
+<ul class="collection">
+	{% for d in data %}
+	<li class="collection-item avatar">
+		<!--<img src="images/yuna.jpg" alt="" class="circle">-->
+		<span class="title">{{ d.name }}</span>
+		<p>{{ d.value }}</p>
+		<p>{{ d.date }}</p>
+		<a href="#!" class="secondary-content"><i class="medium material-icons">insert_chart</i></a>
+	</li>
+	{% endfor %}
+</ul>
 {% endblock %}

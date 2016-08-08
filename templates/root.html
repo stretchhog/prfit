@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PR Fitness</title>
+
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!----------------- CSS ----------------->
+	<link rel='stylesheet' type="text/css"
+	      href="{{ url_for('static', filename='bower_components/font-awesome/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css"
+	      href="{{ url_for('static', filename='bower_components/materialize/dist/css/materialize.min.css') }}">
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+	<!----------------- DEPENDENCIES ----------------->
+	<script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='bower_components/angular/angular.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='bower_components/angular-resource/angular-resource.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='bower_components/materialize/dist/js/materialize.min.js') }}"></script>
+
+
+	<!----------------- JS FILES ----------------->
+	<script src="{{ url_for('static', filename='js/metrics.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/controllers.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/services.js') }}"></script>
+
+</head>
+<body ng-app="app">
+<header>
+	{% block title %}
+	{% endblock %}
+	<div class="container"><a href="#" data-activates="nav-mobile"
+	                          class="button-collapse top-nav full hide-on-large-only"><i class="material-icons">menu</i></a>
+	</div>
+	<ul id="nav-mobile" class="side-nav fixed" style="overflow: auto; transform: translateX(0%);">
+
+		<!-- If not logged in-->
+		<!--<li><a class="waves-effect" href="#"><i class="tiny material-icons">input</i>Sign in</a></li>-->
+		<!-- --------- -->
+
+		<!--If logged in-->
+		<li>
+			<div class="userView">
+				<img class="background light-blue accent-3" src="">
+				<a href="#user"><img class="circle" src=""></a>
+				<a href="#name"><span class="white-text name">John Doe</span></a>
+				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+			</div>
+		</li>
+		<li>
+			<div class="divider"></div>
+		</li>
+
+		<li><a class="waves-effect" href="#"><i class="tiny material-icons">add_circle_outline</i>Track new record</a>
+		</li>
+
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion">
+				<li class="bold"><a class="collapsible-header  waves-effect waves-teal">
+					<i class="tiny material-icons">star</i>Records</a>
+					<div class="collapsible-body" style="display: none;">
+						<ul>
+							{% for m in menu %}
+							<li><a href="#">{{ m }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+
+		<li>
+			<div class="divider"></div>
+		</li>
+		<li><a class="waves-effect" href="#"><i class="tiny material-icons">settings</i>Settings</a></li>
+		<!-- --------- -->
+
+		<!-- Always-->
+		<li>
+			<div class="divider"></div>
+		</li>
+		<li><a class="subheader">About</a></li>
+		<li><a class="waves-effect" href="https://github.com/stretchhog/prfit/issues"><i class="tiny material-icons">announcement</i>Upcoming
+			features</a></li>
+		<li><a class="waves-effect" href="contact.html"><i class="tiny material-icons">mail</i>Contact</a></li>
+	</ul>
+</header>
+<main>
+	<div class="container">
+		{% block main %}
+		{% endblock %}
+	</div>
+</main>
+<footer>
+	{% include 'footer.html' %}
+</footer>
+</body>
+<script>
+	$(document).ready(function () {
+		$(".button-collapse").sideNav({
+			closeOnClick: true
+		});
+		$('.collapsible').collapsible({
+			accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+		});
+	})
+</script>
+</html>

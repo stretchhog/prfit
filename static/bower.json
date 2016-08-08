@@ -3,13 +3,9 @@
   "dependencies": {
     "font-awesome": null,
     "jquery": null,
-    "bootstrap": null,
-    "d3": null,
+    "materialize": null,
     "angular": "1.5.0",
     "angular-ui-notification": null,
-    "angular-material": "master",
-    "angular-aria": null,
-    "angular-animate": null,
     "angular-resource": null
   },
   "resolutions": {

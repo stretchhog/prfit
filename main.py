@@ -1,20 +1,14 @@
 """`main` is the top level module for your Flask application."""
 
 # Import the Flask Framework
-from flask_restful import Resource, Api
+from flask_restful import Api
 
-from flask import Flask, send_from_directory
+from flask import Flask
 
 app = Flask(__name__)
 api = Api(app)
 
 
-class Main(Resource):
-	@staticmethod
-	def get():
-		return send_from_directory('templates', 'index.html')
-
-
 @app.errorhandler(404)
 def page_not_found(e):
 	"""Return a custom 404 error."""
@@ -37,5 +31,6 @@ def page_not_found(e):
 def application_error(e):
 	"""Return a custom 500 error."""
 	return 'Sorry, unexpected error: {}'.format(e), 500
+
 
 from handlers import root, prs

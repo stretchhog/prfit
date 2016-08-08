@@ -1,8 +1,25 @@
-{% extends "index.html" %}
-{% block index %}
+{% extends "root.html" %}
+{% block main %}
 
-<div class="col-md-2 hidden-sm hidden-xs"> test left</div>
-<div class="col-md-8 content">
+<div class="section no-pad-bot" id="index-banner">
+	<div class="container">
+		<h1 class="header center-on-small-only">Materialize</h1>
+		<div class="row center">
+			<h4 class="header col s12 light center">A modern responsive front-end framework based on Material Design</h4>
+		</div>
+		<div class="row center">
+			<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light">Get Started</a>
+		</div>
+		<div class="row center"><a class="red-text text-lighten-4" href="https://github.com/Dogfalo/materialize">beta release v0.97.7</a></div>
+		<br>
+
+	</div>
+	<div class="github-commit">
+		<div class="container">
+				See on <a id="github-button" href="https://github.com/stretchhog/prfit" class="btn-flat right grey-text text-lighten-5 waves-effect waves-light hide-on-small-only">Github</a>
+		</div>
+	</div>
+</div>
 	<p>
 		This no-nonsnse website will allow you to track your personal fitness records (for short: PR). Choose from
 		pre-set
@@ -27,6 +44,4 @@
 		or you need support regarding this website, contact me
 		through the <a href="#">contact form</a>.
 	</p>
-</div>
-<div class="col-md-2 hidden-sm hidden-xs"> test right</div>
 {% endblock %}
