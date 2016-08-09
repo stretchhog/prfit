@@ -1,0 +1,18 @@
+# if config.DEVELOPMENT
+  <script src="/p/dev/script/ext.js?{{config.CURRENT_VERSION_ID}}"></script>
+  <script src="/p/dev/script/script.js?{{config.CURRENT_VERSION_ID}}"></script>
+  <script src="http://{{request.host.split(':')[0]}}:35729/livereload.js"></script>
+# else
+  <script src="/p/min/script/ext.js?{{config.CURRENT_VERSION_ID}}"></script>
+  <script src="/p/min/script/script.js?{{config.CURRENT_VERSION_ID}}"></script>
+# endif
+<script>
+  $(document).ready(function () {
+    $(".button-collapse").sideNav({
+      closeOnClick: true
+    });
+    $('.collapsible').collapsible({
+      accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  })
+</script>

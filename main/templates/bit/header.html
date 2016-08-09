@@ -1,0 +1,66 @@
+<header>
+  # block header
+  # endblock
+  <div class="container"><a href="#" data-activates="nav-mobile"
+                            class="button-collapse top-nav full hide-on-large-only"><i class="material-icons">menu</i></a>
+  </div>
+  <ul id="nav-mobile" class="side-nav fixed" style="overflow: auto; transform: translateX(0%);">
+
+    <!-- If not logged in-->
+    <!-- --------- -->
+
+    # if current_user.id > 0
+    <li>
+      <div class="userView">
+        <img class="background light-blue accent-3" src="">
+        <a href="#user"><img class="circle" src=""></a>
+        <a href="#name"><span class="white-text name">{{ current_user.name }}</span></a>
+        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="divider"></div>
+    </li>
+
+    <li><a class="waves-effect" href="#"><i class="tiny material-icons">add_circle_outline</i>Track new record</a>
+    </li>
+
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion">
+        <li class="bold"><a class="collapsible-header  waves-effect waves-teal">
+          <i class="tiny material-icons">star</i>Records</a>
+          <div class="collapsible-body" style="display: none;">
+            <ul>
+              # for m in menu
+              <li><a href="#">{{ m }}</a></li>
+              # endfor
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li><a class="waves-effect" href="{{url_for('profile')}}"><i class="tiny material-icons">settings</i>Settings</a></li>
+    # if current_user.admin
+    <li><a class="waves-effect" href="{{url_for('admin')}}"><i class="tiny material-icons">settings</i>Admin</a></li>
+    <li><a class="waves-effect" href="{{url_for('signout')}}"><i class="tiny material-icons">input</i>Sign out</a></li>
+    # endif
+    <!-- --------- -->
+    # else
+    <li><a class="waves-effect" href="{{url_for('signin')}}"><i class="tiny material-icons">input</i>Sign in</a></li>
+    # endif
+
+    <!-- Always-->
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li><a class="subheader">About</a></li>
+    <li><a class="waves-effect" href="https://github.com/stretchhog/prfit/issues"><i class="tiny material-icons">announcement</i>Upcoming features</a></li>
+    # if config.CONFIG_DB.feedback_email
+    <li><a class="waves-effect" href="contact.html"><i class="tiny material-icons">mail</i>Contact</a></li>
+    # endif
+  </ul>
+</header>
