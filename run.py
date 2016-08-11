@@ -337,7 +337,7 @@ def run_start():
 	make_dirs(DIR_STORAGE)
 	port = int(ARGS.port)
 	run_command = ' '.join(map(str, [
-		'dev_appserver.py',
+		'C:/Users/tvancann/AppData/Local/Google/google_appengine/dev_appserver.py',
 		DIR_MAIN,
 		'--host %s' % ARGS.host,
 		'--port %s' % port,

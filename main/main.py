@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import flask
-from flask.ext.restful import Api
+from flask_restful import Api
 
 import config
 import util

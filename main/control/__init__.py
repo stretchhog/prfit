@@ -11,3 +11,4 @@ from .test import *
 from .welcome import *
 
 from .dashboard import *
+from .records import *

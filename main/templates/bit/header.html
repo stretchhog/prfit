@@ -6,16 +6,15 @@
   </div>
   <ul id="nav-mobile" class="side-nav fixed" style="overflow: auto; transform: translateX(0%);">
 
-    <!-- If not logged in-->
-    <!-- --------- -->
-
     # if current_user.id > 0
     <li>
       <div class="userView">
         <img class="background light-blue accent-3" src="">
-        <a href="#user"><img class="circle" src=""></a>
-        <a href="#name"><span class="white-text name">{{ current_user.name }}</span></a>
-        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        # if user_db is defined
+        <a href="#user"><img class="circle" src="{{user_db.avatar_url_size(512)}}"></a>
+        <a href="#name"><span class="white-text name">{{ user_db.name }}</span></a>
+        <a href="#email"><span class="white-text email">{{ user_db.email }}</span></a>
+        # endif
       </div>
     </li>
     <li>
@@ -27,26 +26,25 @@
 
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion">
-        <li class="bold"><a class="collapsible-header  waves-effect waves-teal">
+        <li class="bold"><a class="collapsible-header waves-effect waves-teal">
           <i class="tiny material-icons">star</i>Records</a>
           <div class="collapsible-body" style="display: none;">
             <ul>
-              # for m in menu
-              <li><a href="#">{{ m }}</a></li>
-              # endfor
+              <li><a href="#">Running</a></li>
+              <li><a href="#">Crossfit</a></li>
+              <li><a href="#">Weight lifting</a></li>
             </ul>
           </div>
         </li>
       </ul>
     </li>
 
-    <li>
-      <div class="divider"></div>
-    </li>
+    <li> <div class="divider"></div> </li>
     <li><a class="waves-effect" href="{{url_for('profile')}}"><i class="tiny material-icons">settings</i>Settings</a></li>
-    # if current_user.admin
-    <li><a class="waves-effect" href="{{url_for('admin')}}"><i class="tiny material-icons">settings</i>Admin</a></li>
     <li><a class="waves-effect" href="{{url_for('signout')}}"><i class="tiny material-icons">input</i>Sign out</a></li>
+    # if current_user.admin
+    <li> <div class="divider"></div> </li>
+    <li><a class="waves-effect" href="{{url_for('admin')}}"><i class="tiny material-icons">power</i>Admin</a></li>
     # endif
     <!-- --------- -->
     # else
@@ -57,7 +55,7 @@
     <li>
       <div class="divider"></div>
     </li>
-    <li><a class="subheader">About</a></li>
+    <li><a class="subheader"><i class="tiny material-icons">info</i>About</a></li>
     <li><a class="waves-effect" href="https://github.com/stretchhog/prfit/issues"><i class="tiny material-icons">announcement</i>Upcoming features</a></li>
     # if config.CONFIG_DB.feedback_email
     <li><a class="waves-effect" href="contact.html"><i class="tiny material-icons">mail</i>Contact</a></li>

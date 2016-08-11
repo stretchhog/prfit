@@ -213,7 +213,7 @@ def signin():
 			if result is None:
 				form.email.errors.append('Email or Password do not match')
 			if result is False:
-				return flask.redirect(flask.url_for('welcome'))
+				return flask.redirect(flask.url_for('dashboard'))
 		if not form.errors:
 			form.next_url.data = next_url
 
@@ -405,7 +405,7 @@ def signin_user_db(user_db):
 		return flask.redirect(flask.url_for('signin'))
 	flask_user_db = FlaskUser(user_db)
 	auth_params = flask.session.get('auth-params', {
-		'next': flask.url_for('welcome'),
+		'next': flask.url_for('dashboard'),
 		'remember': False,
 	})
 	flask.session.pop('auth-params', None)

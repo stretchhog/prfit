@@ -3,7 +3,6 @@ paths = require './paths'
 config =
   ext: [
     "#{paths.static.ext}/jquery/dist/jquery.js"
-    "#{paths.static.ext}/moment/moment.js"
     "#{paths.static.ext}/materialize/bin/materialize.js"
   ]
   style: [

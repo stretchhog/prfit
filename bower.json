@@ -1,17 +1,7 @@
 {
   "name": "prfit",
   "dependencies": {
-    "font-awesome": null,
-    "bootstrap": null,
     "jquery": null,
     "materialize": null
-  },
-  "overrides": {
-    "bootstrap": {
-      "main": ["less/**", "fonts/*", "js/*"]
-    },
-    "font-awesome": {
-      "main": ["less/*", "fonts/*"]
-    }
   }
 }

@@ -1,9 +1,8 @@
-{% extends "base_content.html" %}
-{% block title_name %}Dashboard{% endblock %}
-{% block main %}
-
 <ul class="collection">
-	{% for d in data %}
+	# extends "base.html"
+	# block content
+
+	# for d in data
 	<li class="collection-item avatar">
 		<!--<img src="images/yuna.jpg" alt="" class="circle">-->
 		<span class="title">{{ d.name }}</span>
@@ -11,6 +10,6 @@
 		<p>{{ d.date.strftime('%a, %d %b %Y') }}</p>
 		<a href="#!" class="secondary-content"><i class="medium material-icons">insert_chart</i></a>
 	</li>
-	{% endfor %}
+	# endfor
 </ul>
-{% endblock %}
+# endblock
