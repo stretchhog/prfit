@@ -16,7 +16,8 @@ class BaseMetric(model.Base, polymodel.PolyModel):
 	name = ndb.StringProperty(required=True)
 
 
-class BaseActivity(model.User, polymodel.PolyModel):
+class BaseActivity(model.Base, polymodel.PolyModel):
+	user_key = ndb.KeyProperty(kind=model.User, required=True)
 	category_key = ndb.KeyProperty(kind=BaseCategory, required=True)
 	metric_key = ndb.KeyProperty(kind=BaseMetric, required=True)
 

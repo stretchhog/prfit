@@ -21,9 +21,9 @@ class TrackActivityForm(Form):
 	def __init__(self, data, *args, **kwargs):
 		super(TrackActivityForm, self).__init__(*args, **kwargs)
 		self.category_name.data = data.category_key.get().name
-		self.category_key.data = data.category_key
-		self.activity_name = data.activity_key.get().name
-		self.activity_key = data.activity_key
+		self.category_key.data = data.category_key.urlsafe()
+		self.activity_name = data.name
+		self.activity_key = data.key.urlsafe()
 		self.tracked = data.tracked
 
 
@@ -33,13 +33,15 @@ class TrackActivitiesForm(Form):
 	def __init__(self, data, *args, **kwargs):
 		super(TrackActivitiesForm, self).__init__(*args, **kwargs)
 		for d in data:
-			self.track_activities.data.append(TrackActivitiesForm(d))
+			self.track_activities.data.append(TrackActivityForm(d))
 
 
 class TrackActivity(Resource):
 	def get(self, key):
-		data = BaseActivity.get_by('category_key', Key(urlsafe=key))
-		return make_response(render_template("track/track_activity.html", data=data))
+		user_key = auth.current_user_key()
+		data, _ = BaseActivity.get_dbs(user_key=user_key, category_key=Key(urlsafe=key))
+		form = TrackActivitiesForm(data)
+		return make_response(render_template("track/track_activity.html", form=form))
 
 	def post(self):
 		pass
