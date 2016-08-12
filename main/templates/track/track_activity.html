@@ -1,0 +1,10 @@
+<form method="post">
+	<fieldset>
+		{{form.csrf_token}}
+		{{form.hidden_tag}}
+
+		{{form.track_activities()}}
+
+		<button type="submit" class="btn btn-primary btn-block">Save</button>
+	</fieldset>
+</form>

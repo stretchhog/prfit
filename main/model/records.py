@@ -16,12 +16,13 @@ class BaseMetric(model.Base, polymodel.PolyModel):
 	name = ndb.StringProperty(required=True)
 
 
-class BaseActivity(model.Base, polymodel.PolyModel):
+class BaseActivity(model.User, polymodel.PolyModel):
 	category_key = ndb.KeyProperty(kind=BaseCategory, required=True)
 	metric_key = ndb.KeyProperty(kind=BaseMetric, required=True)
 
 	name = ndb.StringProperty()
 	description = ndb.StringProperty()
+	tracked = ndb.BooleanProperty(default=False)
 
 
 class BaseRecord(BaseUser, polymodel.PolyModel):

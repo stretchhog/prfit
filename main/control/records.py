@@ -23,11 +23,6 @@ class RecordForm(Form):
 		self.category.choices = [(cat.key.urlsafe(), cat.name) for cat in cats]
 
 
-class Record(Resource):
-	def get(self):
-		return make_response(render_template("records/track_new.html", form=RecordForm()))
-
-
 class InitActivities(Resource):
 	@staticmethod
 	def get():
@@ -40,34 +35,34 @@ class InitActivities(Resource):
 		amrap = BaseMetric(name="AMRAP").put()
 		rep = BaseMetric(name="One-Rep Max").put()
 
-		BaseActivity(category_key=running, metric_key=time, name="400m").put()
-		BaseActivity(category_key=running, metric_key=time, name="1k").put()
-		BaseActivity(category_key=running, metric_key=time, name="1mi").put()
-		BaseActivity(category_key=running, metric_key=time, name="5k").put()
-		BaseActivity(category_key=running, metric_key=time, name="10k").put()
-		BaseActivity(category_key=running, metric_key=time, name="half marathon").put()
-		BaseActivity(category_key=running, metric_key=time, name="marathon").put()
-		BaseActivity(category_key=running, metric_key=dist, name="Longest run").put()
+		user = auth.current_user_key()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="400m").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="1k").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="1mi").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="5k").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="10k").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="Half Marathon").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=time, name="Marathon").put()
+		BaseActivity(user_key=user, category_key=running, metric_key=dist, name="Longest Run").put()
 
-		BaseActivity(category_key=lifting, metric_key=rep, name="Deadlift").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Squat").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Bench Press").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Shoulder Press").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Push Jerk").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Power Clean").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Squat Clean").put()
-		BaseActivity(category_key=lifting, metric_key=rep, name="Power Snatch").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Deadlift").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Squat").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Bench Press").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Shoulder Press").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Push Jerk").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Power Clean").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Squat Clean").put()
+		BaseActivity(user_key=user, category_key=lifting, metric_key=rep, name="Power Snatch").put()
 
-		BaseActivity(category_key=crossfit, metric_key=time, name="Grace", description=grace).put()
-		BaseActivity(category_key=crossfit, metric_key=time, name="Fran", description=fran).put()
-		BaseActivity(category_key=crossfit, metric_key=time, name="Helen", description=helen).put()
-		BaseActivity(category_key=crossfit, metric_key=time, name="Filthy 50", description=filthy).put()
-		BaseActivity(category_key=crossfit, metric_key=amrap, name="Fight Gone Bad", description=fgb).put()
-		BaseActivity(category_key=crossfit, metric_key=time, name="DT", description=dt).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=time, name="Grace", description=grace).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=time, name="Fran", description=fran).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=time, name="Helen", description=helen).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=time, name="Filthy 50", description=filthy).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=amrap, name="Fight Gone Bad", description=fgb).put()
+		BaseActivity(user_key=user, category_key=crossfit, metric_key=time, name="DT", description=dt).put()
 		return Response(status=204)
 
 
-api.add_resource(Record, '/track_new')
 api.add_resource(InitActivities, '/init')
 
 grace = """

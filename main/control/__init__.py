@@ -12,3 +12,4 @@ from .welcome import *
 
 from .dashboard import *
 from .records import *
+from .track import *
