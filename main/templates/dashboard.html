@@ -1,15 +1,13 @@
-<ul class="collection">
-	# extends "base.html"
-	# block content
+# extends "base.html"
+# block content
 
-	# for d in data
-	<li class="collection-item avatar">
-		<!--<img src="images/yuna.jpg" alt="" class="circle">-->
-		<span class="title">{{ d.name }}</span>
-		<p>{{ d.value }}</p>
-		<p>{{ d.date.strftime('%a, %d %b %Y') }}</p>
-		<a href="#!" class="secondary-content"><i class="medium material-icons">insert_chart</i></a>
-	</li>
-	# endfor
-</ul>
+# for d in data
+<li class="collection-item avatar">
+	<!--<img src="images/yuna.jpg" alt="" class="circle">-->
+	<span class="title">{{ d.name }}</span>
+	<p>{{ d.value }}</p>
+	<p>{{ d.date.strftime('%a, %d %b %Y') }}</p>
+	<a href="#!" class="secondary-content"><i class="medium material-icons">insert_chart</i></a>
+</li>
+# endfor
 # endblock
