@@ -1,12 +1,9 @@
-{{ form }}
 <form method="post">
 	<fieldset>
 		{{form.csrf_token}}
 
-		# for f in form.track_activities
-			# for field in f
-				{{ field() }}
-			# endfor
+		# for activity in form.track_activities
+		{{ activity.form.activity_name }}
 		# endfor
 
 		<button type="submit" class="btn btn-primary btn-block">Save</button>

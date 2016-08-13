@@ -27,8 +27,9 @@ class BaseActivity(model.Base, polymodel.PolyModel):
 
 
 class BaseRecord(BaseUser, polymodel.PolyModel):
-	activity = ndb.KeyProperty(kind=BaseActivity, required=True)
-	category = ndb.KeyProperty(kind=BaseCategory, required=True)
+	user_key = ndb.KeyProperty(kind=model.User, required=True)
+	activity_key = ndb.KeyProperty(kind=BaseActivity, required=True)
+	category_key = ndb.KeyProperty(kind=BaseCategory, required=True)
 
 	value = ndb.StringProperty(required=True)
 	date = ndb.DateProperty()

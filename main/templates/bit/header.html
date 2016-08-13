@@ -11,9 +11,9 @@
       <div class="userView">
         <img class="background light-blue accent-3" src="">
         # if user_db is defined
-        <a href="#user"><img class="circle" src="{{user_db.avatar_url_size(512)}}"></a>
-        <a href="#name"><span class="white-text name">{{ user_db.name }}</span></a>
-        <a href="#email"><span class="white-text email">{{ user_db.email }}</span></a>
+        <a href="#user"><img class="circle" src="{{ current_user.user_db.avatar_url_size(512)}}"></a>
+        <a href="#name"><span class="white-text name">{{current_user.user_db.name}}</span></a>
+        <a href="#email"><span class="white-text email">{{ current_user.user_db.email }}</span></a>
         # endif
       </div>
     </li>
@@ -21,7 +21,7 @@
       <div class="divider"></div>
     </li>
 
-    <li><a class="waves-effect" href="#"><i class="tiny material-icons">add_circle_outline</i>Track new record</a>
+    <li><a class="waves-effect" href="{{ url_for('choosecategory') }}"><i class="tiny material-icons">add_circle_outline</i>Track new record</a>
     </li>
 
     <li class="no-padding">
@@ -30,7 +30,7 @@
           <i class="tiny material-icons">star</i>Records</a>
           <div class="collapsible-body" style="display: none;">
             <ul>
-              <li><a href="#">Running</a></li>
+              <li><a href="{{ url_for('running') }}">Running</a></li>
               <li><a href="#">Crossfit</a></li>
               <li><a href="#">Weight lifting</a></li>
             </ul>
