@@ -27,7 +27,7 @@ gulp.task 'copy_bower_files', false, ['bower'], ->
 
 
 gulp.task 'pip', false, ->
-  gulp.src('run.py').pipe $.start [{match: /run.py$/, cmd: 'C:/Python27/python run.py -d'}]
+  gulp.src('run.py').pipe $.start [{match: /run.py$/, cmd: '/usr/bin/python run.py -d'}]
 
 
 gulp.task 'zip', false, ->

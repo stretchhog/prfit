@@ -1,14 +1,48 @@
 # extends "base.html"
+
 # block content
 
-	<h4>Running</h4>
-	<ul>
-		# for a, r in activities
-		<li>{{a.name}}
+<ul class="collapsible popout" data-collapsible="accordion">
+	# for a, r in activities
+	<li>
+		<div class="collapsible-header">
+			<i class="material-icons">
+				# if a.metric_key.get().name == 'Time'
+				timer
+				# elif a.metric_key.get().name == 'Distance'
+				location_on
+				# elif a.metric_key.get().name == 'AMRAP'
+				update
+				# elif a.metric_key.get().name == 'One-Rep Max'
+				plus_one
+				# endif
+			</i><span class="title"> {{a.name}}</span><i class="material-icons right">more_vert</i>
+			<br>
 			# if r|length > 0
-			{{ r[-1].value }}
+			Best attempt: <code>{{ r[-1].value }}</code>
 			# endif
-		</li>
-		# endfor
-	</ul>
+		</div>
+		<div class="collapsible-body">
+			<a class="btn teal lighten-2"><i class="material-icons left">add_circle_outline</i><span
+					class="hide-on-small-and-down">new</span></a>
+			<a class="btn orange lighten-2"><i class="material-icons left">insert_chart</i><span
+					class="hide-on-small-and-down">history</span></a>
+			<a class="btn indigo darken-3"><i class="material-icons left">edit</i><span
+					class="hide-on-small-and-down">edit</span></a>
+			<a class="btn red darken-4"><i class="material-icons left">remove_circle_outline</i><span
+					class="hide-on-small-and-down">untrack</span></a>
+			# if a.description is not none
+			<blockquote>
+				{{ a.description|safe }}
+			</blockquote>
+			# endif
+			# if r|length > 0 and r[-1].notes is not none
+			<blockquote>
+				{{ r[-1].notes|safe }}
+			</blockquote>
+			# endif
+		</div>
+	</li>
+	# endfor
+</ul>
 # endblock

@@ -57,5 +57,5 @@ gulp.task 'run',
 
       gulp.src('run.py').pipe $.start [{
         match: /run.py$/
-        cmd: "C:/Python27/python run.py #{options_str}"
+        cmd: "/usr/bin/python run.py #{options_str}"
       }]

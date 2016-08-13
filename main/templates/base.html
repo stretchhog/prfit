@@ -17,10 +17,20 @@
   <body>
     # include 'bit/header.html'
     # include 'bit/announcement.html'
+
     <main>
+	    <nav class="top-nav">
+		    <div class="container">
+			    <div class="nav-wrapper"><a class="page-title">
+				    {{ title if title}}
+			    </a></div>
+		    </div>
+	    </nav>
+      <div class="container">
 		    # include 'bit/notifications.html'
 		    # block content
 		    # endblock
+      </div>
     </main>
     # include 'bit/footer.html'
     # include 'bit/script.html'

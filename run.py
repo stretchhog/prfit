@@ -49,7 +49,7 @@ ARGS = PARSER.parse_args()
 # Globals
 ###############################################################################
 BAD_ENDINGS = ['pyc', 'pyo', '~']
-GAE_PATH = 'C:/Users/tvancann/AppData/Local/Google/google_appengine'
+GAE_PATH = ''
 IS_WINDOWS = platform.system() == 'Windows'
 
 ###############################################################################
@@ -115,7 +115,7 @@ def site_packages_path():
 
 def create_virtualenv():
 	if not os.path.exists(FILE_VENV):
-		os.system('C:/Python27/python -m virtualenv --no-site-packages %s' % DIR_VENV)
+		os.system('/usr/bin/python -m virtualenv --no-site-packages %s' % DIR_VENV)
 		os.system('echo %s >> %s' % (
 			'set PYTHONPATH=' if IS_WINDOWS else 'unset PYTHONPATH', FILE_VENV
 		))
@@ -337,7 +337,7 @@ def run_start():
 	make_dirs(DIR_STORAGE)
 	port = int(ARGS.port)
 	run_command = ' '.join(map(str, [
-		'C:/Users/tvancann/AppData/Local/Google/google_appengine/dev_appserver.py',
+		'dev_appserver.py',
 		DIR_MAIN,
 		'--host %s' % ARGS.host,
 		'--port %s' % port,
