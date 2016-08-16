@@ -23,9 +23,9 @@
 			# endif
 		</div>
 		<div class="collapsible-body">
-			<a class="btn teal lighten-2"><i class="material-icons medium">add_circle_outline</i></a>
-			<a class="btn orange lighten-2"><i class="material-icons medium">insert_chart</i></a>
-			<a class="btn indigo darken-3"><i class="material-icons medium">edit</i></a>
+			<a class="btn teal lighten-2" href="/activity/record/new/{{a.key.urlsafe()}}"><i class="material-icons medium">add_circle_outline</i></a>
+			<a class="btn orange lighten-2" href="/activity/history/{{a.key.urlsafe()}}"><i class="material-icons medium">insert_chart</i></a>
+			<a class="btn indigo darken-3" href="/activity/records/{{a.key.urlsafe()}}"><i class="material-icons medium">edit</i></a>
 			# if a.description is not none
 			<blockquote>
 				{{ a.description|safe }}

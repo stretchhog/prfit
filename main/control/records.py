@@ -26,9 +26,9 @@ class RecordForm(Form):
 		cats, _ = BaseCategory.get_dbs()
 		self.category.choices = [(cat.key.urlsafe(), cat.name) for cat in cats]
 
-	def new(self, record):
-		self.activity.data = record.activity.urlsafe()
-		self.category.data = record.category.urlsafe()
+	def new(self, activity):
+		self.activity.data = activity.key.urlsafe()
+		self.category.data = activity.category_key.urlsafe()
 		return self
 
 	def edit(self, record):
@@ -40,7 +40,7 @@ class RecordForm(Form):
 		return self
 
 
-class Records(Resource):
+class Activities(Resource):
 	@auth.login_required
 	def get(self, category_key):
 		user_key = auth.current_user_key()
@@ -52,14 +52,14 @@ class Records(Resource):
 
 class NewRecord(Resource):
 	@auth.login_required
-	def get(self, record_key):
-		record = Key(urlsafe=record_key).get()
-		form = RecordForm().new(record)
-		return base_auth_response('records/new_records.html', form=form)
+	def get(self, activity_key):
+		a = Key(urlsafe=activity_key).get()
+		form = RecordForm().new(a)
+		return base_auth_response('records/new_record.html', form=form)
 
 	@auth.login_required
-	def post(self, record_key):
-		record = Key(urlsafe=record_key).get()
+	def post(self, activity_key):
+		record = Key(urlsafe=activity_key).get()
 		form = RecordForm()
 		if form.validate_on_submit():
 			entity = BaseRecord()
@@ -68,7 +68,7 @@ class NewRecord(Resource):
 			if entity.is_valid_entry(form):
 				entity.put()
 				flash('Toevoegen succesvol.', category='success')
-				return redirect(api.url_for(Records, category_key=record.category_key))
+				return redirect(api.url_for(Activities, category_key=record.category_key))
 		flash('Toevoegen niet gelukt.', category='warning')
 		return base_auth_response('records/new_record.html', form=form)
 
@@ -138,8 +138,8 @@ class InitActivities(Resource):
 
 
 api.add_resource(InitActivities, '/init')
-api.add_resource(Records, '/records/<string:category_key>')
-api.add_resource(NewRecord, '/record/<string:record_key>')
+api.add_resource(Activities, '/activities/<string:category_key>')
+api.add_resource(NewRecord, '/activity/record/new/<string:activity_key>')
 
 grace = """
 30 power clean and push jerks
