@@ -2,6 +2,8 @@
   "name": "prfit",
   "dependencies": {
     "jquery": null,
-    "materialize": null
+    "materialize": null,
+    "angular": null,
+    "angular-resource": null
   }
 }
