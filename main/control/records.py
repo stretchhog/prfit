@@ -1,6 +1,7 @@
 from google.appengine.ext.ndb.key import Key
 
 import wtforms
+import wtforms_components
 import datetime
 
 from control import base_auth_response
@@ -40,6 +41,10 @@ class RecordForm(Form):
 		return self
 
 
+class TimeRecordForm(RecordForm):
+	value = wtforms_components.TimeField('Time', [wtforms.validators.required()])
+
+
 class Activities(Resource):
 	@auth.login_required
 	def get(self, category_key):
@@ -55,7 +60,7 @@ class NewRecord(Resource):
 	def get(self, activity_key):
 		a = Key(urlsafe=activity_key).get()
 		form = RecordForm().new(a)
-		return base_auth_response('records/new_record.html', form=form)
+		return base_auth_response('records/new_record.html', form=form, activity=a)
 
 	@auth.login_required
 	def post(self, activity_key):

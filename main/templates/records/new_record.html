@@ -1,7 +1,33 @@
 # extends "base.html"
+# import 'macro/forms.html' as forms
 # block content
 
-	<h2>Update your record</h2>
-	{{ form }}
+<h4>Update your record for:</h4>
+<h5>{{activity.category_key.get().name}} | {{activity.name}}</h5>
+
+<form method="POST" action="." novalidate>
+	{{form.csrf_token}}
+	{{forms.hidden_field(form.activity)}}
+	{{forms.hidden_field(form.category)}}
+
+	# if activity.metric_key.get().name == 'Time'
+	{{forms.text_field(form.value, autofocus=True)}}
+	# elif a.metric_key.get().name == 'Distance'
+	location_on
+	# elif a.metric_key.get().name == 'AMRAP'
+	update
+	# elif a.metric_key.get().name == 'One-Rep Max'
+	plus_one
+	# endif
+	{{forms.text_field(form.value, autofocus=True)}}
+	{{forms.date_field(form.date)}}
+	{{forms.textarea_field(form.notes)}}
+
+	<div class="controls">
+		<button type="submit" class="btn btn-primary btn-block btn-loading" {{forms.data_loading_text()}}>
+			Save
+		</button>
+	</div>
+</form>
 
 # endblock

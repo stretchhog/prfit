@@ -4,6 +4,7 @@ flask-oauthlib==0.9.3
 flask-restful==0.3.5
 jinja2
 wtforms
+WTForms-Components
 flask-wtf==0.12
 flask==0.11.1
 unidecode==0.4.19
