@@ -35,6 +35,9 @@ class BaseRecord(BaseUser, polymodel.PolyModel):
 	date = ndb.DateProperty()
 	notes = ndb.StringProperty()
 
+	def is_valid_entry(self, form):
+		return True
+
 
 class CrossfitRecord(BaseRecord):
 	rxd = ndb.BooleanProperty()

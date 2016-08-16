@@ -1,6 +1,10 @@
+from google.appengine.ext.ndb.key import Key
+
 import wtforms
 import datetime
-from flask import make_response, render_template, Response
+
+from control import base_auth_response
+from flask import make_response, render_template, Response, flash, redirect
 from flask_wtf import Form
 
 from flask_restful import Resource
@@ -11,8 +15,8 @@ from model import BaseCategory, BaseMetric, BaseActivity, BaseRecord
 
 
 class RecordForm(Form):
-	activity = wtforms.SelectField('Activity', [wtforms.validators.required()])
-	category = wtforms.SelectField('Category', [wtforms.validators.required()])
+	activity = wtforms.HiddenField('Activity', [wtforms.validators.required()])
+	category = wtforms.HiddenField('Category', [wtforms.validators.required()])
 	value = wtforms.StringField('Value', [wtforms.validators.required()])
 	date = wtforms.DateField('Date', [wtforms.validators.optional()])
 	notes = wtforms.TextAreaField('Notes', [wtforms.validators.optional()])
@@ -20,38 +24,53 @@ class RecordForm(Form):
 	def __init__(self, *args, **kwargs):
 		super(RecordForm, self).__init__(*args, **kwargs)
 		cats, _ = BaseCategory.get_dbs()
-		print cats
 		self.category.choices = [(cat.key.urlsafe(), cat.name) for cat in cats]
 
+	def new(self, record):
+		self.activity.data = record.activity.urlsafe()
+		self.category.data = record.category.urlsafe()
+		return self
 
-class Running(Resource):
+	def edit(self, record):
+		self.activity.data = record.activity.urlsafe()
+		self.category.data = record.category.urlsafe()
+		self.value.data = record.value
+		self.date.data = record.date
+		self.notes.data = record.notes
+		return self
+
+
+class Records(Resource):
 	@auth.login_required
-	def get(self):
+	def get(self, category_key):
 		user_key = auth.current_user_key()
-		cat = BaseCategory.get_by('name', 'Running')
+		cat = Key(urlsafe=category_key).get()
 		activities = BaseActivity.get_dbs(user_key=user_key, tracked=True, category_key=cat.key)[0]
 		records = [BaseRecord.get_dbs(user_key=user_key, activity_key=a.key)[0] for a in activities]
-		return make_response(render_template('records/running.html', activities=zip(activities, records)))
+		return base_auth_response('records/records.html', activities=zip(activities, records))
 
 
-class WeightLifting(Resource):
+class NewRecord(Resource):
 	@auth.login_required
-	def get(self):
-		user_key = auth.current_user_key()
-		cat = BaseCategory.get_by('name', 'Weight Lifting')
-		activities = BaseActivity.get_dbs(user_key=user_key, tracked=True, category_key=cat.key)[0]
-		records = [BaseRecord.get_dbs(user_key=user_key, activity_key=a.key)[0] for a in activities]
-		return make_response(render_template('records/running.html', activities=zip(activities, records)))
+	def get(self, record_key):
+		record = Key(urlsafe=record_key).get()
+		form = RecordForm().new(record)
+		return base_auth_response('records/new_records.html', form=form)
 
-
-class Crossfit(Resource):
 	@auth.login_required
-	def get(self):
-		user_key = auth.current_user_key()
-		cat = BaseCategory.get_by('name', 'Crossfit')
-		activities = BaseActivity.get_dbs(user_key=user_key, tracked=True, category_key=cat.key)[0]
-		records = [BaseRecord.get_dbs(user_key=user_key, activity_key=a.key)[0] for a in activities]
-		return make_response(render_template('records/running.html', activities=zip(activities, records)))
+	def post(self, record_key):
+		record = Key(urlsafe=record_key).get()
+		form = RecordForm()
+		if form.validate_on_submit():
+			entity = BaseRecord()
+			form.populate_obj(entity)
+			entity.user_key = auth.current_user_key()
+			if entity.is_valid_entry(form):
+				entity.put()
+				flash('Toevoegen succesvol.', category='success')
+				return redirect(api.url_for(Records, category_key=record.category_key))
+		flash('Toevoegen niet gelukt.', category='warning')
+		return base_auth_response('records/new_record.html', form=form)
 
 
 class InitActivities(Resource):
@@ -72,7 +91,7 @@ class InitActivities(Resource):
 
 		crossfit = BaseCategory(name="Crossfit").put()
 		running = BaseCategory(name="Running").put()
-		lifting = BaseCategory(name="Weight Lifting").put()
+		lifting = BaseCategory(name="Lifting").put()
 
 		dist = BaseMetric(name="Distance").put()
 		time = BaseMetric(name="Time").put()
@@ -119,9 +138,8 @@ class InitActivities(Resource):
 
 
 api.add_resource(InitActivities, '/init')
-api.add_resource(Running, '/record/running')
-api.add_resource(WeightLifting, '/record/lifting')
-api.add_resource(Crossfit, '/record/crossfit')
+api.add_resource(Records, '/records/<string:category_key>')
+api.add_resource(NewRecord, '/record/<string:record_key>')
 
 grace = """
 30 power clean and push jerks

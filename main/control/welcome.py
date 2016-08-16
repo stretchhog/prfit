@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import flask
+from control.base import base_auth_response
 from flask import render_template, make_response
 from datetime import datetime
 
@@ -15,18 +16,12 @@ def get_workout_categories():
 	return ['Crossfit', 'Running', 'Weight Lifting']
 
 
-class DefaultResponse(Resource):
-	def get_response(self, template, **kwargs):
-		user_db = auth.current_user_db()
-		return make_response(render_template(template, user_db=user_db, **kwargs))
-
-
 ###############################################################################
 # Welcome
 ###############################################################################
-class Welcome(DefaultResponse):
+class Welcome(Resource):
 	def get(self):
-		return self.get_response('home.html')
+		return base_auth_response('home.html')
 
 
 ###############################################################################
@@ -69,9 +64,9 @@ data = [
 ]
 
 
-class Dashboard(DefaultResponse):
+class Dashboard(Resource):
 	def get(self):
-		return self.get_response('dashboard.html', name="Crossfit", data=data)
+		return base_auth_response('dashboard.html', name="Crossfit", data=data)
 
 
 class User(Resource):

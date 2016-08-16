@@ -10,6 +10,6 @@ from .profile import *
 from .test import *
 from .welcome import *
 
-from .dashboard import *
+from .base import *
 from .records import *
 from .track import *
