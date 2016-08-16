@@ -10,16 +10,9 @@
 	{{forms.hidden_field(form.activity)}}
 	{{forms.hidden_field(form.category)}}
 
-	# if activity.metric_key.get().name == 'Time'
-	{{forms.text_field(form.value, autofocus=True)}}
-	# elif a.metric_key.get().name == 'Distance'
-	location_on
-	# elif a.metric_key.get().name == 'AMRAP'
-	update
-	# elif a.metric_key.get().name == 'One-Rep Max'
-	plus_one
+	# if form.value.type == 'TimeField'
+	{{forms.time_field(form.value, autofocus=True)}}
 	# endif
-	{{forms.text_field(form.value, autofocus=True)}}
 	{{forms.date_field(form.date)}}
 	{{forms.textarea_field(form.notes)}}
 

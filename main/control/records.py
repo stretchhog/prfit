@@ -59,7 +59,8 @@ class NewRecord(Resource):
 	@auth.login_required
 	def get(self, activity_key):
 		a = Key(urlsafe=activity_key).get()
-		form = RecordForm().new(a)
+		if a.metric_key.get().name == 'Time':
+			form = TimeRecordForm().new(a)
 		return base_auth_response('records/new_record.html', form=form, activity=a)
 
 	@auth.login_required
