@@ -112,10 +112,17 @@
 
 
 # macro checkbox_field(field)
-  <div class="checkbox {{'has-error' if field.errors}}">
-    <label class="{{'text-muted' if 'disabled' in kwargs}}">
-      {{field(**kwargs)}} {{field.label.text}}
-    </label>
+  <div class="switch">
+	  <label>
+		  Off
+		  <input type="checkbox"
+		         # if field.data
+		         checked
+		         # endif
+		  >
+		  <span class="lever"></span>
+		  On
+	  </label>
     {{field_errors(field)}}
     {{field_description(field)}}
   </div>
