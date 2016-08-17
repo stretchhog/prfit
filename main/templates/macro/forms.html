@@ -82,7 +82,7 @@
 # endmacro
 
 # macro time_field(field)
-{{input_field(field, type='time', **kwargs)}}
+{{input_field(field, type='text', pattern='([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}', placeholder='hours:minutes:seconds', **kwargs)}}
 # endmacro
 
 # macro email_field(field)

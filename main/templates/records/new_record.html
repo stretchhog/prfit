@@ -5,10 +5,10 @@
 <h4>Update your record for:</h4>
 <h5>{{activity.category_key.get().name}} | {{activity.name}}</h5>
 
-<form method="POST" action="." novalidate>
+<form method="POST" action="/activity/record/new/{{activity.key.urlsafe()}}" novalidate>
 	{{form.csrf_token}}
-	{{forms.hidden_field(form.activity)}}
-	{{forms.hidden_field(form.category)}}
+	{{forms.hidden_field(form.activity_key)}}
+	{{forms.hidden_field(form.category_key)}}
 
 	# if form.value.type == 'TimeField'
 	{{forms.time_field(form.value, autofocus=True)}}
