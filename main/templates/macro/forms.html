@@ -112,19 +112,15 @@
 
 
 # macro checkbox_field(field)
-  <div class="switch">
-	  <label>
-		  Off
-		  <input type="checkbox"
-		         # if field.data
-		         checked
-		         # endif
-		  >
-		  <span class="lever"></span>
-		  On
-	  </label>
+  <div>
     {{field_errors(field)}}
     {{field_description(field)}}
+    <label for="{{field.id}}">{{field.label}}</label>
+    <input type="checkbox" id="{{field.id}}"
+           # if field.data
+           checked="checked"
+           # endif
+    >
   </div>
 # endmacro
 
@@ -136,8 +132,8 @@
     {{field_description(field)}}
     # for key, value in field.choices
       <div class="{{type}}">
-        <label>
-          <input type="{{type}}" name="{{field.name}}" value="{{key}}"
+        <label for="{{key}}">
+          <input type="{{type}}" id="{{key}}" name="{{field.name}}" value="{{key}}"
             # if field.data and key in field.data
               checked
             # endif
@@ -151,7 +147,16 @@
 
 
 # macro multiple_checkbox_field(field)
-  {{list_input_field(field, 'checkbox')}}
+  # for key, value in field.choices
+		<p>
+			<input type="checkbox" id="{{key}}" name="{{field.name}}" value="{{key}}"
+							 # if field.data and key in field.data
+							 checked
+							 # endif
+							 >
+			<label for="{{key}}">{{value}}</label>
+		</p>
+  # endfor
 # endmacro
 
 

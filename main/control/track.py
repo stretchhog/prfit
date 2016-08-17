@@ -1,5 +1,6 @@
 import wtforms
-from flask import make_response, render_template
+from control import Activities
+from flask import make_response, render_template, flash, redirect
 from flask_wtf import Form
 
 from flask_restful import Resource
@@ -12,39 +13,49 @@ from model import BaseCategory, BaseActivity
 
 
 class TrackActivityForm(Form):
-	category_key = wtforms.HiddenField(validators=[wtforms.validators.required()], widget=wtforms.widgets.HiddenInput())
-	activity_key = wtforms.HiddenField(validators=[wtforms.validators.required()], widget=wtforms.widgets.HiddenInput())
-	activity_name = wtforms.StringField('Activity', validators=[wtforms.validators.required()])
+	category_key = wtforms.HiddenField(validators=[wtforms.validators.required()])
+	activity_key = wtforms.HiddenField(validators=[wtforms.validators.required()])
+	activity_name = wtforms.StringField('Activity')
 
 	tracked = wtforms.BooleanField('Tracked')
 
 
 class TrackActivitiesForm(Form):
-	track_activities = wtforms.FieldList(wtforms.FormField(TrackActivityForm))
+	activities = wtforms.SelectMultipleField()
 
-	def __init__(self, activities, *args, **kwargs):
+	def __init__(self, data, *args, **kwargs):
 		super(TrackActivitiesForm, self).__init__(*args, **kwargs)
-		for a in activities:
-			self.track_activities.append_entry(data={
-				'category_key': a.category_key.urlsafe(),
-				'activity_key': a.key.urlsafe(),
-				'activity_name': a.name,
-				'tracked': a.tracked
-			})
+		self.activities.choices = [(d.key.urlsafe(), d.name) for d in data]
+		self.activities.data = [d.key.urlsafe() for d in data if d.tracked]
 
 
 class TrackActivity(Resource):
-	@auth.login_required
-	def get(self, category_key):
+	def response(self, template, form, category_key):
+		return base_auth_response('track/track_activity.html', form=form, category_key=category_key,
+		                          title='Track activities')
+
+	def get_form(self, category_key):
 		user_key = auth.current_user_key()
 		data, _ = BaseActivity.get_dbs(user_key=user_key, category_key=Key(urlsafe=category_key))
 		form = TrackActivitiesForm(data)
+		return form
 
-		app.logger.info(form.track_activities)
-		return base_auth_response('track/track_activity.html', form=form, category_key=category_key, title='Track activities')
+	@auth.login_required
+	def get(self, category_key):
+		return self.response('track/track_activity.html', self.get_form(category_key), category_key)
 
-	def post(self):
-		pass
+	@auth.login_required
+	def post(self, category_key):
+		form = self.get_form(category_key)
+		if form.validate_on_submit():
+			for a in form.data['track_activities']:
+				activity = Key(urlsafe=a['activity_key']).get()
+				activity.tracked = a['tracked']
+				activity.put()
+			flash('Update successful', category='success')
+			return redirect(api.url_for(Activities, category_key=category_key))
+		flash('Update not successful', category='warning')
+		return self.response('track/track_activity.html', form, category_key)
 
 
 class ChooseCategory(Resource):

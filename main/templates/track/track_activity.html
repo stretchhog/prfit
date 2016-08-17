@@ -2,25 +2,14 @@
 # import 'macro/forms.html' as forms
 # block content
 
-<p>Choose which activities you want to track. Note that untracking an activity does not remove your records, if there are any.</p>
+<p>Choose which activities you want to track. Note that untracking an activity does not remove your records, if there
+	are any.</p>
 <form method="post">
 	<form method="POST" action="/track_activity/{{category_key}}" novalidate>
 		<br>
 		{{form.csrf_token}}
 
-		# for activity in form.track_activities
-		{{ forms.hidden_field(activity.form.activity_key) }}
-		{{ forms.hidden_field(activity.form.category_key) }}
-
-		<div class="row">
-			<div class="col s6">
-				{{ activity.form.activity_name.data }}
-			</div>
-			<div class="col s6">
-				{{forms.checkbox_field(activity.form.tracked)}}
-			</div>
-		</div>
-		# endfor
+		{{forms.multiple_checkbox_field(form.activities)}}
 
 		<br>
 		<button type="submit" class="btn btn-primary btn-block">Save</button>

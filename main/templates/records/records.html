@@ -2,6 +2,9 @@
 
 # block content
 
+# if activities|length == 0
+No activities tracked, please <a href="{{url_for('choosecategory')}}">track some</a>.
+# else
 <ul class="collapsible popout" data-collapsible="accordion">
 	# for a, r in activities
 	<li>
@@ -40,4 +43,5 @@
 	</li>
 	# endfor
 </ul>
+# endif
 # endblock
