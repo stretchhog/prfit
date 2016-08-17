@@ -20,6 +20,10 @@ class KeyField(wtforms.HiddenField):
 		setattr(obj, name, Key(urlsafe=self.data))
 
 
+class DistanceField(wtforms.StringField):
+	pass
+
+
 class RecordForm(Form):
 	activity_key = KeyField('Activity', [wtforms.validators.required()])
 	category_key = KeyField('Category', [wtforms.validators.required()])
@@ -49,6 +53,10 @@ class TimeRecordForm(RecordForm):
 	value = wtforms_components.TimeField('Time', [wtforms.validators.required()])
 
 
+class DistanceRecordForm(RecordForm):
+	value = DistanceField('Distance', [wtforms.validators.required()])
+
+
 class Activities(Resource):
 	@auth.login_required
 	def get(self, category_key):
@@ -64,8 +72,13 @@ class NewRecord(Resource):
 	def get(self, activity_key):
 		a = Key(urlsafe=activity_key).get()
 		if a.metric_key.get().name == 'Time':
-			form = TimeRecordForm().new(a)
-		return base_auth_response('records/new_record.html', form=form, activity=a)
+			form = TimeRecordForm
+		elif a.metric_key.get().name == 'Distance':
+			form = DistanceRecordForm
+		else:
+			form = RecordForm
+
+		return base_auth_response('records/new_record.html', form=form().new(a), activity=a)
 
 	@auth.login_required
 	def post(self, activity_key):

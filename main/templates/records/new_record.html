@@ -12,6 +12,10 @@
 
 	# if form.value.type == 'TimeField'
 	{{forms.time_field(form.value, autofocus=True)}}
+	# elif form.value.type == 'DistanceField'
+	{{forms.text_field(form.value, autofocus=True)}}
+	# else
+	{{forms.number_field(form.value, autofocus=True)}}
 	# endif
 	{{forms.date_field(form.date)}}
 	{{forms.textarea_field(form.notes)}}
