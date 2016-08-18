@@ -92,7 +92,7 @@
 
 
 # macro select_field(field)
-{{ input_field(field, **kwargs)}}
+	{{ input_field(field, **kwargs)}}
 # endmacro
 
 
@@ -103,9 +103,9 @@
 
 # macro textarea_field(field, rows=4)
 <div class="form-group {{ 'has-error' if field.errors}}">
-	{{ field.label(class='control-label')}}
+	{{ field.label()}}
 	{{ field_optional(field)}}
-	{{ field(class='form-control', rows=rows, **kwargs)}}
+	{{ field(class='materialize-textarea', rows=rows, **kwargs)}}
 	{{ field_errors(field)}}
 	{{ field_description(field)}}
 </div>
