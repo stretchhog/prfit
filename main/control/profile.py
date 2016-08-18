@@ -12,16 +12,18 @@ import task
 
 from main import app
 
-
 ###############################################################################
 # Profile View
 ###############################################################################
+from main.control import base_auth_response
+
+
 @app.route('/profile/')
 @auth.login_required
 def profile():
 	user_db = auth.current_user_db()
 
-	return flask.render_template(
+	return base_auth_response(
 			'profile/profile.html',
 			title=user_db.name,
 			html_class='profile-view',
@@ -64,7 +66,7 @@ def profile_update():
 			user_db.put()
 			return flask.redirect(flask.url_for('profile'))
 
-	return flask.render_template(
+	return base_auth_response(
 			'profile/profile_update.html',
 			title=user_db.name,
 			html_class='profile-update',
@@ -115,7 +117,7 @@ def profile_password():
 			user_db.put()
 			return flask.redirect(flask.url_for('profile'))
 
-	return flask.render_template(
+	return base_auth_response(
 			'profile/profile_password.html',
 			title=user_db.name,
 			html_class='profile-password',

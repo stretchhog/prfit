@@ -10,6 +10,7 @@ import task
 import util
 
 from main import app
+from main.control import base_auth_response
 
 
 class FeedbackForm(flask_wtf.Form):
@@ -40,7 +41,7 @@ def feedback():
 		flask.flash('Thank you for your feedback!', category='success')
 		return flask.redirect(flask.url_for('welcome'))
 
-	return flask.render_template(
+	return base_auth_response(
 			'feedback.html',
 			title='Feedback',
 			html_class='feedback',

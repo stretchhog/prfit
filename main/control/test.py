@@ -8,6 +8,7 @@ import auth
 import util
 
 from main import app
+from main.control import base_auth_response
 
 TESTS = [
 	'pageres',
@@ -88,7 +89,7 @@ def admin_test(test=None):
 	if form.validate_on_submit():
 		pass
 
-	return flask.render_template(
+	return base_auth_response(
 			'admin/test/test_one.html' if test else 'admin/test/test.html',
 			title='Test: %s' % test.title() if test else 'Test',
 			html_class='test',

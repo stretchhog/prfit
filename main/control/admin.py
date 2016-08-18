@@ -15,6 +15,9 @@ from main import app
 ###############################################################################
 # Admin Stuff
 ###############################################################################
+from main.control import base_auth_response
+
+
 @app.route('/admin/')
 @auth.admin_required
 def admin():
@@ -27,7 +30,7 @@ def admin():
 		except:
 			pass
 
-	return flask.render_template(
+	return base_auth_response(
 			'admin/admin.html',
 			title='Admin',
 			html_class='admin',
@@ -73,7 +76,7 @@ def admin_config():
 		app.config.update(CONFIG_DB=config_db)
 		return flask.redirect(flask.url_for('admin'))
 
-	return flask.render_template(
+	return base_auth_response(
 			'admin/admin_config.html',
 			title='App Config',
 			html_class='admin-config',
@@ -124,7 +127,7 @@ def admin_auth():
 		app.config.update(CONFIG_DB=config_db)
 		return flask.redirect(flask.url_for('admin'))
 
-	return flask.render_template(
+	return base_auth_response(
 			'admin/admin_auth.html',
 			title='Auth Config',
 			html_class='admin-auth',

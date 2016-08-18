@@ -23,6 +23,9 @@ from main import app
 ###############################################################################
 # User List
 ###############################################################################
+from main.control import base_auth_response
+
+
 @app.route('/admin/user/')
 @auth.admin_required
 def user_list():
@@ -35,7 +38,7 @@ def user_list():
 	)
 	permissions = list(UserUpdateForm._permission_choices)
 	permissions += args['permissions']
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_list.html',
 			html_class='user-list',
 			title='User List',
@@ -116,7 +119,7 @@ def user_update(user_id=0):
 					'user_list', order='-modified', active=user_db.active,
 			))
 
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_update.html',
 			title=user_db.name or 'New User',
 			html_class='user-update',
@@ -184,7 +187,7 @@ def user_forgot(token=None):
 	if form.errors:
 		cache.bump_auth_attempt()
 
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_forgot.html',
 			title='Forgot Password?',
 			html_class='user-forgot',
@@ -223,7 +226,7 @@ def user_reset(token=None):
 		flask.flash('Your password was changed succesfully.', category='success')
 		return auth.signin_user_db(user_db)
 
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_reset.html',
 			title='Reset Password',
 			html_class='user-reset',
@@ -266,7 +269,7 @@ def user_activate(token):
 		user_db.put()
 		return auth.signin_user_db(user_db)
 
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_activate.html',
 			title='Activate Account',
 			html_class='user-activate',
@@ -343,7 +346,7 @@ def user_merge():
 				flask.url_for('user_update', user_id=merged_user_db.key.id()),
 		)
 
-	return flask.render_template(
+	return base_auth_response(
 			'user/user_merge.html',
 			title='Merge Users',
 			html_class='user-merge',
