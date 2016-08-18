@@ -64,7 +64,7 @@ class Activities(Resource):
 		cat = Key(urlsafe=category_key).get()
 		activities = BaseActivity.get_dbs(user_key=user_key, tracked=True, category_key=cat.key)[0]
 		records = [BaseRecord.get_dbs(order='-created', user_key=user_key, activity_key=a.key)[0] for a in activities]
-		return base_auth_response('records/records.html', activities=zip(activities, records))
+		return base_auth_response('records/records.html', category_key=category_key, activities=zip(activities, records))
 
 
 class NewRecord(Resource):

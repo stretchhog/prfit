@@ -21,9 +21,6 @@
       <div class="divider"></div>
     </li>
 
-    <li><a class="waves-effect" href="{{ url_for('choosecategory') }}"><i class="tiny material-icons">add_circle_outline</i>Track new record</a>
-    </li>
-
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion">
         <li class="bold"><a class="collapsible-header waves-effect waves-teal">
@@ -31,7 +28,7 @@
           <div class="collapsible-body" style="display: none;">
             <ul>
               # for m in menu
-              <li><a href="/activities/{{m.key.urlsafe()}}">{{m.name}}</a></li>
+              <li><a href="{{url_for('activities', category_key=m.key.urlsafe())}}">{{m.name}}</a></li>
               # endfor
             </ul>
           </div>
