@@ -1,8 +1,9 @@
 # extends 'admin/admin_base.html'
+# import 'macro/forms.html' as forms
 
 # block admin_content
   <div class="row">
-    <div class="col-md-6">
+    <div class="col m6">
       <form method="POST" action="." novalidate>
         {{form.csrf_token}}
         <div class="panel-group">
@@ -20,9 +21,7 @@
           # include 'admin/bit/vk_oauth.html'
           # include 'admin/bit/yahoo_oauth.html'
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block btn-loading" {{forms.data_loading_text()}}>
-          Update Config
-        </button>
+	      {{ forms.submit_button('Update config') }}
       </form>
     </div>
   </div>

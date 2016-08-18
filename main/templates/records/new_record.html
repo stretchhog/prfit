@@ -21,9 +21,7 @@
 	{{forms.textarea_field(form.notes)}}
 
 	<div class="controls">
-		<button type="submit" class="btn btn-primary btn-block btn-loading" {{forms.data_loading_text()}}>
-			Save
-		</button>
+		{{ forms.submit_button('Save') }}
 	</div>
 </form>
 
