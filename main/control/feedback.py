@@ -10,7 +10,7 @@ import task
 import util
 
 from main import app
-from main.control import base_auth_response
+from control.base import base_auth_response
 
 
 class FeedbackForm(flask_wtf.Form):

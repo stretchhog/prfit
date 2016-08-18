@@ -15,7 +15,7 @@ from main import app
 ###############################################################################
 # Admin Stuff
 ###############################################################################
-from main.control import base_auth_response
+from control.base import base_auth_response
 
 
 @app.route('/admin/')

@@ -15,8 +15,7 @@ from main import app
 ###############################################################################
 # Profile View
 ###############################################################################
-from main.control import base_auth_response
-
+from control.base import base_auth_response
 
 @app.route('/profile/')
 @auth.login_required

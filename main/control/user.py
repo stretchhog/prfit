@@ -19,11 +19,11 @@ import util
 
 from main import app
 
+from control.base import base_auth_response
 
 ###############################################################################
 # User List
 ###############################################################################
-from main.control import base_auth_response
 
 
 @app.route('/admin/user/')
