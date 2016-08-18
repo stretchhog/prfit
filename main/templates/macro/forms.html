@@ -181,28 +181,23 @@
 
 
 # macro panel_fields(name, fields, help)
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h4 class="panel-title">
-			<a data-toggle="collapse" data-parent=".panel-group" href="#{{ slugify(name)}}">{{ name }}</a>
-			<span class="fa fa-check pull-right {{ 'hide' if not check_form_fields(fields)}}"></span>
-		</h4>
+<li>
+	<div class="collapsible-header">
+		{% if check_form_fields(fields) %}<i class="material-icons">check</i>{% endif %}{{ name }}
 	</div>
-	<div id="{{ slugify(name)}}" class="panel-collapse collapse">
-		<div class="panel-body">
-			# if is_iterable(fields)
-			# for field in fields:
-			{{ text_field(field)}}
-			# endfor
-			#else
-			{{ text_field(fields)}}
-			#endif
-			# if help
-			<p class="help-block">{{ help|safe }}</p>
-			# endif
-		</div>
+	<div class="collapsible-body">
+		# if is_iterable(fields)
+		# for field in fields:
+		{{ text_field(field)}}
+		# endfor
+		#else
+		{{ text_field(fields)}}
+		#endif
+		# if help
+		<p class="help-block">{{ help|safe }}</p>
+		# endif
 	</div>
-</div>
+</li>
 # endmacro
 
 

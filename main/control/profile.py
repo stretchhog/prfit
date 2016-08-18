@@ -26,7 +26,6 @@ def profile():
 			'profile/profile.html',
 			title=user_db.name,
 			html_class='profile-view',
-			user_db=user_db,
 	)
 
 
@@ -70,7 +69,6 @@ def profile_update():
 			title=user_db.name,
 			html_class='profile-update',
 			form=form,
-			user_db=user_db,
 	)
 
 
@@ -121,5 +119,4 @@ def profile_password():
 			title=user_db.name,
 			html_class='profile-password',
 			form=form,
-			user_db=user_db,
 	)

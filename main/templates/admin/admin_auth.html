@@ -2,27 +2,53 @@
 # import 'macro/forms.html' as forms
 
 # block admin_content
-  <div class="row">
-    <div class="col m6">
-      <form method="POST" action="." novalidate>
-        {{form.csrf_token}}
-        <div class="panel-group">
-          # import 'macro/forms.html' as forms
-          # include 'admin/bit/bitbucket_oauth.html'
-          # include 'admin/bit/dropbox_oauth.html'
-          # include 'admin/bit/facebook_oauth.html'
-          # include 'admin/bit/github_oauth.html'
-          # include 'admin/bit/google_oauth.html'
-          # include 'admin/bit/instagram_oauth.html'
-          # include 'admin/bit/linkedin_oauth.html'
-          # include 'admin/bit/microsoft_oauth.html'
-          # include 'admin/bit/reddit_oauth.html'
-          # include 'admin/bit/twitter_oauth.html'
-          # include 'admin/bit/vk_oauth.html'
-          # include 'admin/bit/yahoo_oauth.html'
-        </div>
-	      {{ forms.submit_button('Update config') }}
-      </form>
-    </div>
-  </div>
+<div class="row">
+	<div class="col m6">
+		<form method="POST" action="." novalidate>
+			{{ form.csrf_token }}
+			<div class="panel-group">
+				# import 'macro/forms.html' as forms
+				<ul class="collapsible" data-collapsible="accordion">
+					<li>
+						# include 'admin/bit/bitbucket_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/dropbox_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/facebook_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/github_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/google_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/instagram_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/linkedin_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/microsoft_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/reddit_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/twitter_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/vk_oauth.html'
+					</li>
+					<li>
+						# include 'admin/bit/yahoo_oauth.html'
+					</li>
+				</ul>
+			</div>
+			{{ forms.submit_button('Update config') }}
+		</form>
+	</div>
+</div>
 # endblock
