@@ -114,9 +114,7 @@
 
 # macro checkbox_field(field)
 <div>
-	{{ field_errors(field)}}
-	{{ field_description(field)}}
-	<input type="checkbox" id="{{ field.id }}"
+	<input type="checkbox" id="{{ field.id }}" name="{{ field.id }}"
 	       # if field.data
 	       checked="checked"
 	       # endif
