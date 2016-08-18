@@ -150,7 +150,7 @@
   # for key, value in field.choices
 		<p>
 			<input type="checkbox" id="{{key}}" name="{{field.name}}" value="{{key}}"
-							 # if field.data and key in field.data
+							 # if field.default and key in field.default
 							 checked
 							 # endif
 							 >

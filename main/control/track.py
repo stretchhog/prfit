@@ -26,7 +26,7 @@ class TrackActivitiesForm(Form):
 	def __init__(self, data, *args, **kwargs):
 		super(TrackActivitiesForm, self).__init__(*args, **kwargs)
 		self.activities.choices = [(d.key.urlsafe(), d.name) for d in data]
-		self.activities.data = [d.key.urlsafe() for d in data if d.tracked]
+		self.activities.default = [d.key.urlsafe() for d in data if d.tracked]
 
 
 class TrackActivity(Resource):
@@ -48,9 +48,12 @@ class TrackActivity(Resource):
 	def post(self, category_key):
 		form = self.get_form(category_key)
 		if form.validate_on_submit():
-			for a in form.data['track_activities']:
-				activity = Key(urlsafe=a['activity_key']).get()
-				activity.tracked = a['tracked']
+			for changed in set(form.activities.default).symmetric_difference(set(form.activities.data)):
+				activity = Key(urlsafe=changed).get()
+				if changed in form.activities.data:
+					activity.tracked = True
+				else:
+					activity.tracked = False
 				activity.put()
 			flash('Update successful', category='success')
 			return redirect(api.url_for(Activities, category_key=category_key))
