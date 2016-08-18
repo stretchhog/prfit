@@ -12,10 +12,6 @@ from auth import auth
 from main import app, api
 
 
-def get_workout_categories():
-	return ['Crossfit', 'Running', 'Weight Lifting']
-
-
 ###############################################################################
 # Welcome
 ###############################################################################
@@ -46,29 +42,6 @@ def warmup():
 	return 'success'
 
 
-data = [
-	{
-		"name": "Murph",
-		"metric": "Time",
-		"value": "49:20",
-		'date': datetime.today(),
-		"rxd": True
-	},
-	{
-		"name": "DT",
-		"metric": "AMRAP",
-		"value": "17",
-		'date': datetime.today(),
-		"rxd": False
-	}
-]
-
-
-class Dashboard(Resource):
-	def get(self):
-		return base_auth_response('dashboard.html', name="Crossfit", data=data)
-
-
 class User(Resource):
 	@staticmethod
 	def get():
@@ -76,5 +49,4 @@ class User(Resource):
 
 
 api.add_resource(Welcome, '/')
-api.add_resource(Dashboard, '/dashboard')
 api.add_resource(User, '/user')

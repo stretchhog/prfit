@@ -8,10 +8,7 @@
     # include 'user/user_email_field.html'
 
     <div class="controls">
-      <button type="submit" class="btn waves-effect waves-light btn-loading" {{forms.data_loading_text()}}>
-        Update Profile
-        <i class="material-icons right">send</i>
-      </button>
+      {{forms.submit_button('Update profile')}}
     </div>
   </form>
 # endblock
