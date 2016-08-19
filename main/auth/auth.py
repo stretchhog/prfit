@@ -20,6 +20,7 @@ import task
 import util
 
 from main import app
+from model import BaseCategory, BaseMetric, BaseActivity
 
 _signals = flask.signals.Namespace()
 
@@ -396,6 +397,7 @@ def create_user_db(auth_id, name, username, email='', verified=False, **props):
 	)
 	user_db.put()
 	task.new_user_notification(user_db)
+	populate_db_with_default_activities(user_db)
 	return user_db
 
 
@@ -431,3 +433,87 @@ def get_user_db_from_email(email, password):
 	if user_db.password_hash == util.password_hash(user_db, password):
 		return user_db
 	return None
+
+def populate_db_with_default_activities(user_db):
+	crossfit = BaseCategory(user_key=user_db.key, name="Crossfit").put()
+	running = BaseCategory(user_key=user_db.key, name="Running").put()
+	lifting = BaseCategory(user_key=user_db.key, name="Lifting").put()
+
+	dist = BaseMetric(user_key=user_db.key, name="Distance").put()
+	time = BaseMetric(user_key=user_db.key, name="Time").put()
+	amrap = BaseMetric(user_key=user_db.key, name="AMRAP").put()
+	rep = BaseMetric(user_key=user_db.key, name="One-Rep Max").put()
+
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="400m").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="1k").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="1mi").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="5k").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="10k").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="Half Marathon").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="Marathon").put()
+	BaseActivity(user_key=user_db.key, category_key=running, metric_key=dist, name="Longest Run").put()
+
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Deadlift").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Squat").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Bench Press").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Shoulder Press").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Push Jerk").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Power Clean").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Squat Clean").put()
+	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Power Snatch").put()
+
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Grace", description=grace).put()
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Fran", description=fran).put()
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Helen", description=helen).put()
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Filthy 50", description=filthy).put()
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=amrap, name="Fight Gone Bad", description=fgb).put()
+	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="DT", description=dt).put()
+
+
+grace = """
+30 power clean and push jerks
+"""
+
+fran = """
+21-15-9 reps of:<br>
+95lbs/43kg Thrusters<br>
+Pull-ups
+"""
+
+dt = """
+Five rounds of:<br>
+155lbs/70kg Deadlift, 12 reps<br>
+155lbs/70kg  Hang power clean, 9 reps<br>
+155lbs/70kg Push jerk, 6 reps
+"""
+
+helen = """
+Three rounds of:<br>
+Run 400 meters<br>
+1.5pood/55lbs/25kg Kettlebell X 21 swings<br>
+12 Pull-ups
+"""
+
+filthy = """
+50 Box jump, 24"/61cm box<br>
+50 Jumping pull-ups<br>
+50 Kettlebell swings, 1 pood/36lbs/16kg<br>
+Walking Lunges, 50 steps<br>
+50 Knees to elbows<br>
+50 Push press, 45lbs/21kg<br>
+50 Back extensions<br>
+50 Wall ball shots, 20lbs/9kg ball<br>
+50 Burpees<br>
+50 Double unders
+"""
+
+fgb = """
+Three rounds of:<br>
+Wall-ball, 20lbs/9kg ball, 10ft/3m target (Reps)<br>
+Sumo deadlift high-pull, 75lbs/34kg (Reps)<br>
+Box Jump, 20"/51cm box (Reps)<br>
+Push-press, 75lbs/34kg (Reps)<br>
+Row (Calories)<br>
+<br>
+In this workout you move from each of five stations after a minute.The clock does not reset or stop between exercises. This is a five-minute round from which a one-minute break is allowed before repeating. On call of "rotate", the athletes must move to next station immediately for best score. One point is given for each rep, except on the rower where each calorie is one point.
+"""
