@@ -12,11 +12,16 @@
 
 	# if form.value.type == 'TimeField'
 	{{forms.time_field(form.value, autofocus=True)}}
-	# elif form.value.type == 'DistanceField'
-	{{forms.text_field(form.value, autofocus=True)}}
+	# elif form.value.type == 'IntegerField'
+	{{forms.number_field(form.value, autofocus=True, min=0, step=1)}}
 	# else
-	{{forms.number_field(form.value, autofocus=True)}}
+	{{forms.number_field(form.value, autofocus=True, min=0, step=0.1)}}
 	# endif
+
+	# if form.rxd is defined
+	{{forms.checkbox_field(form.rxd)}}
+	# endif
+
 	{{forms.date_field(form.date)}}
 	{{forms.textarea_field(form.notes)}}
 

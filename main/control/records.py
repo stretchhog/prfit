@@ -12,7 +12,14 @@ from flask_restful import Resource
 
 from auth import auth
 from main import api, app
-from model import BaseCategory, BaseMetric, BaseActivity, BaseRecord
+from model import *
+
+
+class BaseForm(Form):
+	@classmethod
+	def append_field(cls, name, field):
+		setattr(cls, name, field)
+		return cls
 
 
 class KeyField(wtforms.HiddenField):
@@ -20,14 +27,15 @@ class KeyField(wtforms.HiddenField):
 		setattr(obj, name, Key(urlsafe=self.data))
 
 
-class DistanceField(wtforms.StringField):
-	pass
+class CountField(wtforms.IntegerField):
+	def populate_obj(self, obj, name):
+		setattr(obj, name, CountMetric(user_key=auth.current_user_key(), value=self.data).put())
 
 
-class RecordForm(Form):
+class RecordForm(BaseForm):
 	activity_key = KeyField('Activity', [wtforms.validators.required()])
 	category_key = KeyField('Category', [wtforms.validators.required()])
-	value = wtforms.StringField('Value', [wtforms.validators.required()])
+	metric_key = KeyField('Metric', [wtforms.validators.required()])
 	date = wtforms.DateField('Date', [wtforms.validators.optional()])
 	notes = wtforms.TextAreaField('Notes', [wtforms.validators.optional()])
 
@@ -38,12 +46,14 @@ class RecordForm(Form):
 	def new(self, activity):
 		self.activity_key.data = activity.key.urlsafe()
 		self.category_key.data = activity.category_key.urlsafe()
+		self.metric_key.data = activity.metric_key.urlsafe()
+		self.value.label.text = activity.metric_key.get().name
 		return self
 
 	def edit(self, record):
 		self.activity_key.data = record.activity.urlsafe()
 		self.category_key.data = record.category.urlsafe()
-		self.value.data = record.value
+		self.value.data = record.value.get().value
 		self.date.data = record.date
 		self.notes.data = record.notes
 		return self
@@ -53,8 +63,12 @@ class TimeRecordForm(RecordForm):
 	value = wtforms_components.TimeField('Time', [wtforms.validators.required()])
 
 
-class DistanceRecordForm(RecordForm):
-	value = DistanceField('Distance', [wtforms.validators.required()])
+class DecimalRecordForm(RecordForm):
+	value = wtforms.FloatField('', [wtforms.validators.required()])
+
+
+class CountRecordForm(RecordForm):
+	value = CountField('', [wtforms.validators.required()])
 
 
 class Activities(Resource):
@@ -68,25 +82,38 @@ class Activities(Resource):
 		                          activities=zip(activities, records))
 
 
+def select_form(activity):
+	if activity.metric_key.get().type == 'TimeMetric':
+		form = TimeRecordForm
+	elif activity.metric_key.get().type == 'CountMetric':
+		form = CountRecordForm
+	elif activity.metric_key.get().type == 'DecimalMetric':
+		form = DecimalRecordForm
+	else:
+		raise NotImplementedError()
+
+	if activity.category_key.get().name == 'Crossfit':
+		form.append_field('rxd', wtforms.BooleanField('RXd'))
+
+	return form
+
+
 class NewRecord(Resource):
 	@auth.login_required
 	def get(self, activity_key):
-		a = Key(urlsafe=activity_key).get()
-		if a.metric_key.get().name == 'Time':
-			form = TimeRecordForm
-		elif a.metric_key.get().name == 'Distance':
-			form = DistanceRecordForm
-		else:
-			form = RecordForm
-
-		return base_auth_response('records/new_record.html', form=form().new(a), activity=a)
+		activity = Key(urlsafe=activity_key).get()
+		form = select_form(activity)().new(activity)
+		return base_auth_response('records/new_record.html', form=form, activity=activity)
 
 	@auth.login_required
 	def post(self, activity_key):
 		activity = Key(urlsafe=activity_key).get()
-		form = RecordForm()
+		form = select_form(activity)().new(activity)
 		if form.validate_on_submit():
-			entity = BaseRecord()
+			if activity.category_key.get().name == 'Crossfit':
+				entity = CrossfitRecord()
+			else:
+				entity = BaseRecord()
 			form.populate_obj(entity)
 			entity.user_key = auth.current_user_key()
 			if entity.is_valid_entry(form):
@@ -96,6 +123,6 @@ class NewRecord(Resource):
 		flash('Toevoegen niet gelukt.', category='warning')
 		return base_auth_response('records/new_record.html', form=form)
 
+
 api.add_resource(Activities, '/activities/<string:category_key>')
 api.add_resource(NewRecord, '/activity/record/new/<string:activity_key>')
-

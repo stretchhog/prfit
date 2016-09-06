@@ -4,20 +4,15 @@ from google.appengine.ext.ndb import polymodel
 import model
 
 
-class BaseCategory(model.Base, polymodel.PolyModel):
+class BaseCategory(model.Base):
 	user_key = ndb.KeyProperty(kind=model.User, required=True)
 	name = ndb.StringProperty(required=True)
 
 
-class BaseMetric(model.Base, polymodel.PolyModel):
-	user_key = ndb.KeyProperty(kind=model.User, required=True)
-	name = ndb.StringProperty(required=True)
-
-
-class BaseActivity(model.Base, polymodel.PolyModel):
+class BaseActivity(model.Base):
 	user_key = ndb.KeyProperty(kind=model.User, required=True)
 	category_key = ndb.KeyProperty(kind=BaseCategory, required=True)
-	metric_key = ndb.KeyProperty(kind=BaseMetric, required=True)
+	metric_key = ndb.KeyProperty(kind=model.MetricType, required=True)
 
 	name = ndb.StringProperty()
 	description = ndb.StringProperty()
@@ -29,7 +24,7 @@ class BaseRecord(model.Base, polymodel.PolyModel):
 	activity_key = ndb.KeyProperty(kind=BaseActivity, required=True)
 	category_key = ndb.KeyProperty(kind=BaseCategory, required=True)
 
-	value = ndb.StringProperty(required=True)
+	value = ndb.KeyProperty(kind=model.BaseMetric, required=True)
 	date = ndb.DateProperty()
 	notes = ndb.StringProperty()
 

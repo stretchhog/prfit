@@ -4,4 +4,5 @@ from .base import Base
 from .config_auth import ConfigAuth
 from .config import Config
 from .user import User
-from .records import *
+from .metric import MetricType, BaseMetric, DecimalMetric, CountMetric, TimeMetric
+from .records import BaseActivity, BaseCategory, BaseRecord, CrossfitRecord

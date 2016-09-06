@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import functools
 import re
 
+import datetime
 from flask_oauthlib import client as oauth
 from google.appengine.ext import ndb
 import flask
@@ -20,7 +21,7 @@ import task
 import util
 
 from main import app
-from model import BaseCategory, BaseMetric, BaseActivity
+from model import BaseCategory, BaseActivity, MetricType, BaseRecord, TimeMetric
 
 _signals = flask.signals.Namespace()
 
@@ -434,40 +435,46 @@ def get_user_db_from_email(email, password):
 		return user_db
 	return None
 
+
 def populate_db_with_default_activities(user_db):
-	crossfit = BaseCategory(user_key=user_db.key, name="Crossfit").put()
-	running = BaseCategory(user_key=user_db.key, name="Running").put()
-	lifting = BaseCategory(user_key=user_db.key, name="Lifting").put()
+	crossfit = BaseCategory(user_key=user_db, name="Crossfit").put()
+	running = BaseCategory(user_key=user_db, name="Running").put()
+	lifting = BaseCategory(user_key=user_db, name="Lifting").put()
 
-	dist = BaseMetric(user_key=user_db.key, name="Distance").put()
-	time = BaseMetric(user_key=user_db.key, name="Time").put()
-	amrap = BaseMetric(user_key=user_db.key, name="AMRAP").put()
-	rep = BaseMetric(user_key=user_db.key, name="One-Rep Max").put()
+	dist = MetricType(user_key=user_db, name="Distance", type='DecimalMetric').put()
+	time = MetricType(user_key=user_db, name="Time", type='TimeMetric').put()
+	amrap = MetricType(user_key=user_db, name="AMRAP", type='CountMetric').put()
+	rep = MetricType(user_key=user_db, name="One-Rep Max", type='DecimalMetric').put()
 
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="400m").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="1k").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="1mi").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="5k").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="10k").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="Half Marathon").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=time, name="Marathon").put()
-	BaseActivity(user_key=user_db.key, category_key=running, metric_key=dist, name="Longest Run").put()
+	fourm = BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="400m", tracked=True,
+	                     description="Example description").put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="1k", tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="1mi").put()
+	fivek = BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="5k", tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="10k").put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="Half Marathon").put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=time, name="Marathon").put()
+	BaseActivity(user_key=user_db, category_key=running, metric_key=dist, name="Longest Run", tracked=True).put()
 
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Deadlift").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Squat").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Bench Press").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Shoulder Press").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Push Jerk").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Power Clean").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Squat Clean").put()
-	BaseActivity(user_key=user_db.key, category_key=lifting, metric_key=rep, name="Power Snatch").put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Deadlift", tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Squat", tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Bench Press").put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Shoulder Press").put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Push Jerk", tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Power Clean").put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Squat Clean").put()
+	BaseActivity(user_key=user_db, category_key=lifting, metric_key=rep, name="Power Snatch").put()
 
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Grace", description=grace).put()
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Fran", description=fran).put()
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Helen", description=helen).put()
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="Filthy 50", description=filthy).put()
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=amrap, name="Fight Gone Bad", description=fgb).put()
-	BaseActivity(user_key=user_db.key, category_key=crossfit, metric_key=time, name="DT", description=dt).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=time, name="Grace", description=grace).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=time, name="Fran", description=fran, tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=time, name="Helen", description=helen).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=time, name="Filthy 50", description=filthy).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=amrap, name="Fight Gone Bad", description=fgb, tracked=True).put()
+	BaseActivity(user_key=user_db, category_key=crossfit, metric_key=time, name="DT", description=dt, tracked=True).put()
+
+	BaseRecord(user_key=user_db, category_key=running, activity_key=fourm, value=TimeMetric(value=datetime.time(0, 2, 4, 0), user_key=user_db).put(), date=datetime.date.today()).put()
+	BaseRecord(user_key=user_db, category_key=running, activity_key=fivek, value=TimeMetric(value=datetime.time(0, 15, 55, 0), user_key=user_db).put(), date=datetime.date.today()).put()
+	BaseRecord(user_key=user_db, category_key=running, activity_key=fivek, value=TimeMetric(value=datetime.time(0, 15, 04, 0), user_key=user_db).put(), date=datetime.date.today()).put()
 
 
 grace = """

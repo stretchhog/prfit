@@ -23,7 +23,7 @@ Track more activities <a href="{{url_for('trackactivity', category_key=category_
 			</i><span class="title"> {{a.name}}</span><i class="material-icons right">more_vert</i>
 			<br>
 			# if r|length > 0
-			Best attempt: <code>{{ r[0].value }}</code>
+			Best attempt: <code>{{ r[0].value.get().value }}</code>
 			# endif
 		</div>
 		<div class="collapsible-body">
