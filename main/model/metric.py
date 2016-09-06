@@ -14,8 +14,8 @@ class BaseMetric(model.Base, polymodel.PolyModel):
 	user_key = ndb.KeyProperty(kind=model.User, required=True)
 
 
-class TimeMetric(BaseMetric):
-	value = ndb.TimeProperty(required=True)
+class DurationMetric(BaseMetric):
+	value = ndb.IntegerProperty(required=True)
 
 
 class DecimalMetric(BaseMetric):

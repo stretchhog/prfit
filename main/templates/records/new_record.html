@@ -10,8 +10,8 @@
 	{{forms.hidden_field(form.activity_key)}}
 	{{forms.hidden_field(form.category_key)}}
 
-	# if form.value.type == 'TimeField'
-	{{forms.time_field(form.value, autofocus=True)}}
+	# if form.value.type == 'DurationField'
+	{{forms.duration_field(form.value, autofocus=True)}}
 	# elif form.value.type == 'IntegerField'
 	{{forms.number_field(form.value, autofocus=True, min=0, step=1)}}
 	# else

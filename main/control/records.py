@@ -1,3 +1,5 @@
+import abc
+
 from google.appengine.ext.ndb.key import Key
 
 import wtforms
@@ -5,7 +7,7 @@ import wtforms_components
 import datetime
 
 from control import base_auth_response
-from flask import make_response, render_template, Response, flash, redirect
+from flask import flash, redirect
 from flask_wtf import Form
 
 from flask_restful import Resource
@@ -27,9 +29,25 @@ class KeyField(wtforms.HiddenField):
 		setattr(obj, name, Key(urlsafe=self.data))
 
 
+def put_value(metric, value):
+	return metric(user_key=auth.current_user_key(), value=value).put()
+
+
+class DurationField(wtforms.StringField):
+	def populate_obj(self, obj, name):
+		split = self.data.split(':')
+		value = int(split[0]) * 3600 + int(split[1]) * 60 + int(split[2])
+		setattr(obj, name, put_value(DurationMetric, value))
+
+
 class CountField(wtforms.IntegerField):
 	def populate_obj(self, obj, name):
-		setattr(obj, name, CountMetric(user_key=auth.current_user_key(), value=self.data).put())
+		setattr(obj, name, put_value(CountMetric, self.data))
+
+
+class DecimalField(wtforms.FloatField):
+	def populate_obj(self, obj, name):
+		setattr(obj, name, put_value(DecimalMetric, self.data))
 
 
 class RecordForm(BaseForm):
@@ -60,15 +78,16 @@ class RecordForm(BaseForm):
 
 
 class TimeRecordForm(RecordForm):
-	value = wtforms_components.TimeField('Time', [wtforms.validators.required()])
+	value = DurationField('', [wtforms.validators.required(),
+	                           wtforms.validators.regexp(r'^((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$)')])
 
 
 class DecimalRecordForm(RecordForm):
-	value = wtforms.FloatField('', [wtforms.validators.required()])
+	value = DecimalField('', [wtforms.validators.required(), wtforms.validators.number_range(min=0)])
 
 
 class CountRecordForm(RecordForm):
-	value = CountField('', [wtforms.validators.required()])
+	value = CountField('', [wtforms.validators.required(), wtforms.validators.number_range(min=0)])
 
 
 class Activities(Resource):
@@ -121,7 +140,7 @@ class NewRecord(Resource):
 				flash('Toevoegen succesvol.', category='success')
 				return redirect(api.url_for(Activities, category_key=activity.category_key.urlsafe()))
 		flash('Toevoegen niet gelukt.', category='warning')
-		return base_auth_response('records/new_record.html', form=form)
+		return base_auth_response('records/new_record.html', activity=activity, form=form)
 
 
 api.add_resource(Activities, '/activities/<string:category_key>')

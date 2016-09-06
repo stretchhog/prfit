@@ -72,11 +72,13 @@
 {{ input_field(field, type='number', **kwargs)}}
 # endmacro
 
+# macro duration_field(field)
+{{ input_field(field, type='text', pattern="^((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$)", **kwargs)}}
+# endmacro
 
 # macro date_field(field)
 {{ input_field(field, type='date', class='datepicker', **kwargs)}}
 # endmacro
-
 
 # macro datetime_field(field)
 {{ input_field(field, type='datetime-local', **kwargs)}}
